@@ -1,6 +1,6 @@
 import React from "react";
 import {Button, Col, Container, Navbar} from 'react-bootstrap'
-import {NavLink, useNavigate} from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 
 import {StyledNav} from "./styles";
 import constants from "../../constants";
@@ -23,7 +23,7 @@ const NavBarComp = () => {
         <Navbar bg="light" expand="light" sticky={"top"}>
             <Container>
                 <Col>
-                    <Navbar.Brand>Enigma Course</Navbar.Brand>
+                    <Navbar.Brand><Link to={"/"}>Enigma Course</Link></Navbar.Brand>
                 </Col>
                 <Col className="col-2">
                     <StyledNav>
