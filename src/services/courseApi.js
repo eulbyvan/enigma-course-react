@@ -1,9 +1,7 @@
-import store from "../store";
+import api from "../config/api"
 
-export const getCourseById = (id) => {
-    const courseList = store.getState().courses?.courseList;
-
-    return courseList.filter((course) => {
-        return course.courseId === id;
-    })?.[0]
-}
+export const getCourses = (page) => api.get("courses", {
+    params: {
+        page
+    }
+});
