@@ -2,30 +2,25 @@ import React from "react";
 import {Button} from "react-bootstrap";
 import {StyledContainer, EmptyState, Pagination} from "../components";
 import {useNavigate} from "react-router-dom";
+import useFetchQuery from "../hooks/useFetchQuery"
 
 export default (ListComponent, opts) => {
     return (props) => {
         const navigate = useNavigate();
-        const { label, routeToAdd } = opts;
-        const { listData } = props;
+        const { label, routeToAdd, query } = opts;
         const [currentPage, setCurrentPage] = React.useState(1);
-        const [recordsPerPage] = React.useState(3);
-
-        const indexOfLastRecord = currentPage * recordsPerPage;
-        const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
-        const currentRecords = listData?.slice(indexOfFirstRecord, indexOfLastRecord);
-        const totalPage = Math.ceil(listData?.length / recordsPerPage);
+        const { data, loading, error } = useFetchQuery(query, currentPage)
 
         return (
             <>
                 <StyledContainer>
                     <Button variant="success" onClick={() => navigate(routeToAdd)}>Add {label}</Button>
-                    {currentRecords?.length > 0 ? (
-                        <ListComponent data={currentRecords} {...props} />
+                    {[].length > 0 ? (
+                        <ListComponent data={[]} {...props} />
                     ): <EmptyState text={`Data ${label} Kosong...`} />}
                 </StyledContainer>
                 <Pagination
-                    totalPage={totalPage}
+                    totalPage={0}
                     onChangeCurrentPage={setCurrentPage}
                     currentPage={currentPage}
                 />

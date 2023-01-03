@@ -1,5 +1,5 @@
 import React from "react";
-import {connect, useDispatch} from "react-redux";
+import { connect, useDispatch } from "react-redux";
 
 import {StyledListGroup} from "./styles";
 import CourseItem from "./components/CourseItem";
@@ -7,6 +7,7 @@ import withPaginationList from "../../hoc/withPaginationList";
 import constants from "../../constants";
 import {deleteCourse} from "../../store/actions/courseAction";
 import {useNavigate} from "react-router-dom";
+import { getCourses } from "../../services/courseApi";
 
 const List = ({data}) => {
     const dispatch = useDispatch();
@@ -36,12 +37,8 @@ const List = ({data}) => {
     )
 }
 
-const mapStateToProps = state => ({
-    listData: state.courses.courseList,
-    pagination: state.courses.pagination
-})
-
-export default connect(mapStateToProps)(withPaginationList(List, {
+export default withPaginationList(List, {
     label: "Course",
-    routeToAdd: constants.ROUTES.ADD_COURSE
-}));
+    routeToAdd: constants.ROUTES.ADD_COURSE,
+    query: getCourses
+});
