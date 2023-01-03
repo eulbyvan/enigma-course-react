@@ -6,11 +6,12 @@ import {connect} from "react-redux";
 import {useNavigate} from "react-router-dom";
 
 import {FormInput, StyledContainer} from "../../components";
-import {addCourse} from "../../store/actions/courseAction";
+import { addCourse } from "../../services/courseApi";
 import constants from "../../constants";
 
 import {StyledTitle} from "./styles";
 import useAddCourse from "./useAddCourse";
+import useFetchMutation from '../../hooks/useFetchMutation';
 
 const FORM_LIST = [
     { id: "title", label: "Title", type: "text", placeholder: "Enter course title" },
@@ -27,9 +28,18 @@ const AddCourse = ({
     const { getter, setter } = useAddCourse();
     const navigate = useNavigate();
 
+    const { fetchMutation, loading } = useFetchMutation(addCourse, () => navigate(constants.ROUTES.COURSE));
+
     const submitHandler = () => {
-        addCourse(getter)
-        navigate(constants.ROUTES.COURSE)
+        const payload = new FormData();
+        payload.append("title", getter.title);
+        payload.append("description", getter.description);
+        payload.append("courseTypeId", getter.courseTypeId);
+        payload.append("file", getter.courseFile);
+        payload.append("duration", getter.duration);
+        payload.append("level", getter.level);
+
+        fetchMutation(payload);
     }
 
     return (
@@ -47,7 +57,7 @@ const AddCourse = ({
                     />
                 )) }
                 <ButtonGroup>
-                    <Button variant="success" onClick={submitHandler} disabled={getter.isDisable}>
+                    <Button variant="success" onClick={submitHandler} disabled={getter.isDisable || loading}>
                         Submit
                     </Button>
                     <Button variant="secondary" onClick={() => navigate(constants.ROUTES.COURSE)}>

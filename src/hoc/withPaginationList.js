@@ -11,16 +11,19 @@ export default (ListComponent, opts) => {
         const [currentPage, setCurrentPage] = React.useState(1);
         const { data, loading, error } = useFetchQuery(query, currentPage)
 
+        if (loading) return <h2>Loading...</h2>;
+        if (error) return <h2>Error...</h2>
+
         return (
             <>
                 <StyledContainer>
                     <Button variant="success" onClick={() => navigate(routeToAdd)}>Add {label}</Button>
-                    {[].length > 0 ? (
-                        <ListComponent data={[]} {...props} />
+                    {data?.data?.length > 0 ? (
+                        <ListComponent data={data?.data} {...props} />
                     ): <EmptyState text={`Data ${label} Kosong...`} />}
                 </StyledContainer>
                 <Pagination
-                    totalPage={0}
+                    totalPage={data?.totalPage}
                     onChangeCurrentPage={setCurrentPage}
                     currentPage={currentPage}
                 />

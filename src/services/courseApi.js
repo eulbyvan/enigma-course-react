@@ -9,8 +9,16 @@ export const getCourseById = (id) => {
     })?.[0];
 }
 
-export const getCourses = (page) => api.get("courses", {
+export const getCourses = (page) => api.get("/courses", {
     params: {
         page
     }
 });
+
+export const addCourse = (data) => {
+    return api.post("/courses", data, {
+        headers: {
+            "Content-type": "multipart/form-data"
+        }
+    });
+};

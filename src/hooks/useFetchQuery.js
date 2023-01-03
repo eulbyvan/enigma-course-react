@@ -19,7 +19,7 @@ const useFetchQuery = (query, params) => {
 
     useEffect(() => {
         fetchQuery();
-    }, []);
+    }, [params]);
 
     return {
         data, loading, error
